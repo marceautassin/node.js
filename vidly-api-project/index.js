@@ -1,9 +1,29 @@
 const Joi = require('joi');
-
+const helmet = require('helmet');
+const morgan = require('morgan');
+const logger = require('./logger')
 const express = require('express');
 const app = express();
 
-app.use(express.json());
+// console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+// console.log(`app: ${app.get('env')}`);
+
+app.use(express.json()); //middleware function => req.body
+app.use(express.urlencoded( {extended: true })); //middleware function => req.body
+app.use(express.static('public')); // Define a folder for static web components
+app.use(helmet()); // Define HTTP headers
+
+if(app.get('env') === "development") {
+  app.use(morgan('tiny')); // Define logs
+  console.log("Morgan enabled...")
+};
+
+app.use(logger); // custom middleware function
+
+app.use((req, res, next) => {
+  console.log('Authenticating...');
+  next();
+});
 
 const genres = [
 {id: 1, name: "action"},
