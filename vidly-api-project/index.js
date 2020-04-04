@@ -1,7 +1,9 @@
+const config = require('config');
+
 const Joi = require('joi');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const logger = require('./logger')
+const logger = require('./logger');
 const express = require('express');
 const app = express();
 
@@ -15,10 +17,15 @@ app.use(express.urlencoded({
 app.use(express.static('public')); // Define a folder for static web components
 app.use(helmet()); // Define HTTP headers
 
+//configuration
+console.log('Application name: ' + config.get('name'));
+console.log('Mail server: ' + config.get('mail.host'));
+console.log('Mail password: ' + config.get('mail.password'));
+
 if (app.get('env') === "development") {
   app.use(morgan('tiny')); // Define logs
-  console.log("Morgan enabled...")
-};
+  console.log("Morgan enabled...");
+}
 
 app.use(logger); // custom middleware function
 
