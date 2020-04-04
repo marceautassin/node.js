@@ -1,4 +1,6 @@
 const config = require('config');
+const startupDebugger = require('debug')('app:startup');
+const dbDebugger = require('debug')('app:db');
 
 const Joi = require('joi');
 const helmet = require('helmet');
@@ -9,6 +11,9 @@ const app = express();
 
 // console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 // console.log(`app: ${app.get('env')}`);
+
+app.set('view engine', 'pug');
+app.set('views', './views'); //default
 
 app.use(express.json()); //middleware function => req.body
 app.use(express.urlencoded({
@@ -24,8 +29,12 @@ console.log('Mail password: ' + config.get('mail.password'));
 
 if (app.get('env') === "development") {
   app.use(morgan('tiny')); // Define logs
-  console.log("Morgan enabled...");
+  // console.log("Morgan enabled..."); => old fashion debug
+  startupDebugger("Morgan enabled..."); // console: DEBUG=app:db nodemon index.js
 }
+
+//Db work...
+dbDebugger('Connected to the database...');
 
 app.use(logger); // custom middleware function
 
@@ -65,6 +74,11 @@ const validateGenre = (genre) => {
 };
 
 // get
+
+app.get('/', (req, res) => {
+  res.render('index', {title: "my first app", message: "Hello"})
+});
+
 app.get('/api/genres', (req, res) => {
   res.send(genres);
 });
