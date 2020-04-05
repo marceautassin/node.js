@@ -25,11 +25,11 @@ function getRepos(user) {
 
 function getCommit(repos) {
   getCommits(repos, displayCommits);
-};
+}
 
 function displayCommits(commits) {
   console.log('commit', commits);
-};
+}
 
 // //synchronous
 // console.log('before');
