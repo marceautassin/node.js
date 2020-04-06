@@ -1,34 +1,33 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/playground')
+mongoose.connect('mongodb://localhost/mongo-exercises')
   .then(() => console.log('Connected to mongoDB...'))
   .catch(err => console.error('Could not connect to the database', err));
 
 
 // schema through mongoose
 
-const courseSchema = new mongoose.Schema({
-  name: String,
-  author: String,
-  tags: [String],
-  date: {
-    type: Date,
-    default: Date.now
-  },
-  isPublished: Boolean
-});
+  const courseSchema = new mongoose.Schema({
+    tags: [String],
+    date: Date,
+    name: String,
+    author: String,
+    isPublished: Boolean,
+    price: Number
+  });
 
 
-// model and classes through mongoose
+  // model and classes through mongoose
 
-const Course = mongoose.model('Course', courseSchema);
+  const Course = mongoose.model('Course', courseSchema);
 
 async function createCourse() {
   const course = new Course({
     name: 'angular course',
     author: 'Marceau',
     tags: ['angular', 'frontend'],
-    isPublished: false
+    isPublished: false,
+    price: 2000
   });
 
   const result = await course.save();
@@ -84,9 +83,9 @@ async function createCourse() {
 async function getCourses() {
   const courses = await Course
     .find({
-      author: /.*Marceau.*/
+      author: /.*Mosh.*/
     })
-    //  .limit(10)
+    .limit(10)
     .sort({
       name: 1
     }) // 1 for ascending order, -1 for descending order
@@ -95,4 +94,4 @@ async function getCourses() {
 
 }
 
-getCourses();
+createCourse();

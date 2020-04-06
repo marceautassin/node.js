@@ -26,7 +26,9 @@ async function getCourses() {
       {
         name: /.*by.*/i
       }
-    ]);
+    ])
+    // .count()
+    ;
 
 }
 
