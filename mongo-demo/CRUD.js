@@ -44,9 +44,51 @@ async function getCourses() {
 // getCourses();
 
 async function getCourse(id) {
-  const course = await Course
-  .find();
+  const course = await Course.findById(id);
   console.log(course);
 }
 
-getCourse('5a68fdc3615eda645bc6bdec');
+// getCourse('5e8b6a4b69bc0c347c603ed9');
+
+// Update
+
+// query first
+// async function updateCourse1(id) {
+// const course = await Course.findById(id);
+// if(!course) return;
+// course.set({
+//   name: 'That is a test',
+//   author: 'Marceau obviously',
+//   isPublished: true,
+//   price: 10000
+// });
+// const result = await course.save();
+// console.log(result);
+// }
+
+// updateCourse1('5e8b6b183a10513f72aad77d');
+
+// update first
+
+async function updateCourse2(id) {
+  const course = await Course.findByIdAndUpdate(id, {
+    $set: {
+      name: "Third test sorry...",
+      price: 2
+    }
+  }, {new: true});
+  console.log(course);
+}
+
+// updateCourse2('5e8b6bce128f0a49bb39a5c3');
+
+
+// Delete
+
+async function removeCourse(id) {
+  // const result = await Course.deleteOne({_id: id});
+  const course = await Course.findByIdAndRemove(id);
+  console.log(course);
+}
+
+// removeCourse('5e8b6bbbc29fef48928e687d');
