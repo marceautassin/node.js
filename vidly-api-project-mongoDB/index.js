@@ -1,7 +1,6 @@
 const config = require('config');
 const startupDebugger = require('debug')('app:startup');
 const dbDebugger = require('debug')('app:db');
-const Joi = require('joi');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const logger = require('./middleware/logger');
@@ -9,7 +8,11 @@ const genres = require('./routes/genres'); // call router methods from courses f
 const home = require('./routes/home');
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 
+mongoose.connect('mongodb://localhost/vidly-api-project')
+  .then(() => console.log('Connected to mongoDB...'))
+  .catch((error) => console.error('Error', error));
 
 // console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 // console.log(`app: ${app.get('env')}`);
