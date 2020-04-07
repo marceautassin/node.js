@@ -1,39 +1,8 @@
+const {Genre, validate} = require('../models/genres')
+
 const mongoose = require('mongoose');
 const express = require('express');
-const Joi = require('joi');
 const router = express.Router(); // same as app but for routes
-
-const Genre = mongoose.model('Genre', new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 50
-  }
-}));
-
-// const genres = [{
-//     id: 1,
-//     name: "action"
-//   },
-//   {
-//     id: 2,
-//     name: "français"
-//   },
-//   {
-//     id: 3,
-//     name: "nul"
-//   }
-// ];
-
-// validation
-const validateGenre = (genre) => {
-  const schema = {
-    name: Joi.required()
-  };
-
-  return Joi.validate(genre, schema);
-};
 
 // get
 
@@ -55,7 +24,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   const {
     error
-  } = validateGenre(req.body);
+  } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   let genre = new Genre({
@@ -72,7 +41,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const {
     error
-  } = validateGenre(req.body);
+  } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const genre = await Genre.findByIdAndUpdate(req.params.id, {
     name: req.body.name

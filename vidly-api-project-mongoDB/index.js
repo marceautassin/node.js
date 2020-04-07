@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const logger = require('./middleware/logger');
 const genres = require('./routes/genres'); // call router methods from courses file
+const customers = require('./routes/customers');
 const home = require('./routes/home');
 const express = require('express');
 const app = express();
@@ -28,6 +29,8 @@ app.use(express.static('public')); // Define a folder for static web components
 app.use(helmet()); // Define HTTP headers
 app.use('/api/genres', genres); // for any routes beginning by /api/genres, use routes frome genres
 app.use('/', home);
+app.use('/api/genres', genres); // for any routes beginning by /api/genres, use routes frome genres
+app.use('/api/customers', customers); // for any routes beginning by /api/genres, use routes frome genres
 
 //configuration
 console.log('Application name: ' + config.get('name'));
