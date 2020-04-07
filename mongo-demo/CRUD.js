@@ -34,7 +34,9 @@ const courseSchema = new mongoose.Schema({
   category: {
     type: String,
     enum: ['web', 'mobile', 'network'],
-    lowercase: true
+    lowercase: true,
+    // uppercase: true,
+    trim: true // remove paddings
   },
   author: String,
   isPublished: Boolean,
@@ -42,7 +44,9 @@ const courseSchema = new mongoose.Schema({
     type: Number,
     required: function() {return this.isPublished;},
     min: 10,
-    max: 200
+    max: 200,
+    get: (v) => Math.round(v),
+    set: (v) => Math.round(v)
   }
 });
 
@@ -57,7 +61,7 @@ async function createCourse() {
     author: "Marceau",
     tags: ['frontend'],
     isPublished: true,
-    price: 180
+    price: 180.3
   });
   try {
     const result = await course.save();
