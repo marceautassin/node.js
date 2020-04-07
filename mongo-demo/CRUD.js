@@ -5,12 +5,45 @@ mongoose.connect('mongodb://localhost/mongo-exercises')
   .catch((error) => console.error('Error', error));
 
 const courseSchema = new mongoose.Schema({
-  tags: [String],
+  tags: {
+    type: Array,
+    // synchronous validation
+    // validate: {
+    //   validator: function (v) { return v && v.length > 0;},
+    //   message: 'A course must have at least one tag.'
+    // }
+
+    //asynchronous validation
+    validate: {
+      isAsync: true,
+      validator: function (v, callback) {
+        setTimeout(() => {
+          const result = v && v.length > 0;
+          callback(result);
+        }, 4000);
+      },
+      message: 'A course must have at least one tag.'
+    }
+  },
   date: Date,
-  name: String,
+  name: {
+    type: String,
+    required: true,
+    minlength: 5,
+    maxlength: 225}, //mongoose validation
+  category: {
+    type: String,
+    enum: ['web', 'mobile', 'network'],
+    lowercase: true
+  },
   author: String,
   isPublished: Boolean,
-  price: Number,
+  price: {
+    type: Number,
+    required: function() {return this.isPublished;},
+    min: 10,
+    max: 200
+  }
 });
 
 const Course = mongoose.model('Course', courseSchema);
@@ -19,18 +52,24 @@ const Course = mongoose.model('Course', courseSchema);
 
 async function createCourse() {
   const course = new Course({
-    name: "le meilleur cours de la terre",
+    name: "le plastique c'est fantastique",
+    category: "Web",
     author: "Marceau",
-    tags: ['ruby', 'fullstack'],
+    tags: ['frontend'],
     isPublished: true,
-    price: 1500
+    price: 180
   });
-  const result = await course.save();
-  console.log(result);
-  console.log('course created');
+  try {
+    const result = await course.save();
+    console.log(result);
+  }
+  catch (ex) {
+    for (field in ex.errors)
+    console.log(ex.errors[field].message);
+  }
 }
 
-// createCourse();
+createCourse();
 
 // Read
 
