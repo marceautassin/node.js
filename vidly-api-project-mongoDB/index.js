@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const logger = require('./middleware/logger');
 const genres = require('./routes/genres'); // call router methods from courses file
 const customers = require('./routes/customers');
+const movies = require('./routes/movies');
 const home = require('./routes/home');
 const express = require('express');
 const app = express();
@@ -31,6 +32,7 @@ app.use('/api/genres', genres); // for any routes beginning by /api/genres, use 
 app.use('/', home);
 app.use('/api/genres', genres); // for any routes beginning by /api/genres, use routes frome genres
 app.use('/api/customers', customers); // for any routes beginning by /api/genres, use routes frome genres
+app.use('/api/movies', movies); // for any routes beginning by /api/movies, use routes frome movies
 
 //configuration
 console.log('Application name: ' + config.get('name'));
