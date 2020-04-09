@@ -1,0 +1,85 @@
+const {Rental, validate} = require('../models/rental');
+const {Movie} = require('../models/movie');
+const {Customer} = require('../models/customer');
+const express = require('express');
+const router = express.Router();
+
+
+// get
+
+router.get('/', async (req, res) => {
+const rentals = await Rental.find().sort('-dateOut');
+res.send(rentals);
+});
+
+router.get('/:id', async (req, res) => {
+  const rental = await Rental.findById(req.params.id);
+  if(!rental) return res.status(400).send('This rental ddoes not exist.');
+
+  res.send(rental);
+});
+
+// post
+
+router.post('/', async (req, res) => {
+  const { error } = validate(req.body);
+  if(error) return res.status(400).send('The request is not valid');
+
+  const movie = await Movie.findById(req.body.movieId);
+  if (!movie) return res.status(400).send('wrong ID for movie');
+  if (movie.numberInStock === 0) return res.status(400).send('No movie in stock');
+
+  const customer = await Customer.findById(req.body.customerId);
+  if (!customer) return res.status(400).send('wrong ID for customer');
+
+  let rental = new Rental({
+    customer: {
+      _id: customer.id,
+      name: customer.name,
+      phone: customer.phone,
+      isGold: customer.isGold
+    },
+    movie: {
+      _id: movie.id,
+      title: movie.title,
+      dailyRentalRate: movie.dailyRentalRate
+    }
+  });
+
+  movie.numberInStock--; //decrease the number of movie in stock
+  rental = await rental.save();
+  res.send(rental);
+});
+
+// put
+
+router.put('/:id', async (req, res) => {
+    const {
+      error
+    } = validate(req.body);
+    if (error) return res.status(400).send('The request is not valid');
+
+    const movie = await Movie.findById(req.body.movieId);
+    if (!movie) return res.status(400).send('wrong ID for movie');
+    if (movie.numberInStock === 0) return res.status(400).send('No movie in stock');
+
+    const customer = await Customer.findById(req.body.customerId);
+    if (!customer) return res.status(400).send('wrong ID for customer');
+
+    const rental = await Rental.findByIdAndUpdate(req.params.id, {
+      customer: {
+          _id: customer.id,
+          name: customer.name,
+          phone: customer.phone,
+          isGold: customer.isGold
+        },
+        movie: {
+          _id: movie.id,
+          title: movie.title,
+          dailyRentalRate: movie.dailyRentalRate
+        }
+    }, {new: true});
+    if (!rental) return res.status(400).send('wrong ID for rental');
+});
+
+module.exports = router;
