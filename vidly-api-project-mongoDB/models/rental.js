@@ -1,17 +1,16 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 const {genreSchema} = require('./genre');
-const {customerSchema} = require('./genre');
 
 
 const Rental = mongoose.model('Rental', new mongoose.Schema({
   customer: {
-    type: new mongoose.Schema({ // because we don't want all customer properties here
+    type: new mongoose.Schema({
       name: {
         type: String,
-        require: true,
-        minlength: 2,
-        maxlength: 20
+        required: true,
+        minlength: 5,
+        maxlength: 50
       },
       isGold: {
         type: Boolean,
@@ -23,7 +22,8 @@ const Rental = mongoose.model('Rental', new mongoose.Schema({
         minlength: 5,
         maxlength: 50
       }
-    })
+    }),
+    required: true
   },
   movie: {
     type: new mongoose.Schema({
@@ -32,32 +32,23 @@ const Rental = mongoose.model('Rental', new mongoose.Schema({
         required: true,
         trim: true,
         minlength: 5,
-        maxlength: 250
-      },
-      genre: {
-        type: genreSchema,
-        required: true
-      },
-      numberInStock: {
-        type: Number,
-        required: true,
-        min: 0,
-        max: 150
+        maxlength: 255
       },
       dailyRentalRate: {
         type: Number,
         required: true,
         min: 0,
-        max: 150
+        max: 255
       }
-    })
+    }),
+    required: true
   },
   dateOut: {
     type: Date,
     required: true,
     default: Date.now
   },
-  dateReturn: {
+  dateReturned: {
     type: Date
   },
   rentalFee: {
