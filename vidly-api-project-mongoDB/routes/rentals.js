@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
 
     res.send(rental);
   }
-  catch  {
+  catch(ex) {
     res.status(500).send('Something failes');
   }
 

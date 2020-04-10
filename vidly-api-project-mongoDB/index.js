@@ -12,6 +12,8 @@ const home = require('./routes/home');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const Joi = require("joi");
+Joi.objectId = require('joi-objectid')(Joi); // usefull to validate id before submitting request
 
 mongoose.connect('mongodb://localhost/vidly-api-project')
   .then(() => console.log('Connected to mongoDB...'))
