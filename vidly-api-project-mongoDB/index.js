@@ -8,6 +8,7 @@ const genres = require('./routes/genres'); // call router methods from courses f
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
+const users = require('./routes/users');
 const home = require('./routes/home');
 const express = require('express');
 const app = express();
@@ -37,6 +38,7 @@ app.use('/api/genres', genres); // for any routes beginning by /api/genres, use 
 app.use('/api/customers', customers);
 app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
+app.use('/api/users', users);
 
 //configuration
 console.log('Application name: ' + config.get('name'));

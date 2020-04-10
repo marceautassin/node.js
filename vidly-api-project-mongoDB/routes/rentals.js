@@ -1,7 +1,7 @@
 const {Rental, validate} = require('../models/rental');
 const {Movie} = require('../models/movie');
 const {Customer} = require('../models/customer');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const Fawn = require('fawn');
 const express = require('express');
 const router = express.Router();
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
   const customer = await Customer.findById(req.body.customerId);
   if (!customer) return res.status(400).send('wrong ID for customer');
 
-  let rental = new Rental({
+  const rental = new Rental({ // const au lieu de let car utilisation de Fawn par la suite
     customer: {
       _id: customer.id,
       name: customer.name,
