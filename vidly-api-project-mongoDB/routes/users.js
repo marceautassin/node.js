@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const express = require('express');
 const _ = require('lodash');
 const router = express.Router();
@@ -30,6 +31,9 @@ router.post('/', async (req, res) => {
   user = new User(
     _.pick(req.body, ['name', 'email', 'password'])
   );
+
+  const salt = await bcrypt.genSalt(10); //crée un salt avec une certaine complexité
+  user.password = await bcrypt.hash(user.password, salt); // générèe un mdp crypté en se basant sur le salt généré juste avant.
 
   await user.save();
 
