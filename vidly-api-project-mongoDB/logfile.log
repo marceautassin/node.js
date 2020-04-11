@@ -1,1 +1,27 @@
 {"message":"Somehting failed during startup...","stack":"Error: Somehting failed during startup...\n    at Object.<anonymous> (/home/marceau/code/marceau21/node.js/vidly-api-project-mongoDB/index.js:34:7)\n    at Module._compile (internal/modules/cjs/loader.js:778:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:789:10)\n    at Module.load (internal/modules/cjs/loader.js:653:32)\n    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)\n    at Function.Module._load (internal/modules/cjs/loader.js:585:3)\n    at Function.Module.runMain (internal/modules/cjs/loader.js:831:12)\n    at startup (internal/bootstrap/node.js:283:19)\n    at bootstrapNodeJSCore (internal/bootstrap/node.js:623:3)","level":"error","timestamp":"2020-04-11T13:02:08.432Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T13:52:11.960Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T13:55:25.333Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T13:55:52.939Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:00:43.161Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:01:00.046Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:01:31.939Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:01:44.004Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:02:01.588Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:02:11.293Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:02:27.162Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:05:13.097Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:08:38.759Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:10:27.398Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:10:48.823Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:11:04.742Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:12:10.131Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:13:57.427Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:14:12.522Z"}
+{"level":"info","message":"Listening to port 3000...","timestamp":"2020-04-11T14:15:32.373Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:15:32.412Z"}
+{"level":"info","message":"Listening to port 3000...","timestamp":"2020-04-11T14:16:06.004Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:16:06.050Z"}
+{"level":"info","message":"Listening to port 3000...","timestamp":"2020-04-11T14:17:24.791Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:17:24.833Z"}
+{"level":"info","message":"Listening to port 3000...","timestamp":"2020-04-11T14:18:39.404Z"}
+{"level":"info","message":"Connected to mongoDB...","timestamp":"2020-04-11T14:18:39.449Z"}
