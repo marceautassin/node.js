@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 
-
-const User = mongoose.model('User', new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -19,8 +20,18 @@ const User = mongoose.model('User', new mongoose.Schema({
     required: true,
     minlength: 7,
     maxlength: 250
-  }
-}));
+  },
+  isAdmin: Boolean
+});
+
+userSchema.methods.generateAuthToken = function() {
+  const token = jwt.sign({
+    _id: this._id,
+    isAdmin: this.isAdmin // this refer to the function herself // this does not work with arrow function
+  }, config.get('jwtPrivateKey'));
+  return token;
+};
+const User = mongoose.model('User', userSchema);
 
 const validateUser = (user) => {
   const schema = {
