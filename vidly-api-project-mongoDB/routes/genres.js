@@ -7,9 +7,11 @@ const router = express.Router(); // same as app but for routes
 
 // get
 
-router.get('/', async (req, res) => {
-  const genres = await Genre.find().sort('name');
-  res.send(genres);
+router.get('/',  async (req, res) => {
+    // throw new Error('That is an error'); => test pour winston
+
+    const genres = await Genre.find().sort('name');
+    res.send(genres);
 });
 
 router.get('/:id', async (req, res) => {
@@ -22,7 +24,7 @@ router.get('/:id', async (req, res) => {
 
 // post
 
-router.post('/', auth,  async (req, res) => { // les méthodes ont 3 arguments: route, middleware, function
+router.post('/', auth, async (req, res) => { // les méthodes ont 3 arguments: route, middleware, function
   const {
     error
   } = validate(req.body);
