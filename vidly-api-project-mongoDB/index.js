@@ -29,9 +29,11 @@ require('./startup/validation')();
 // PORT
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   winston.info(`Listening to port ${port}...`);
 });
 
 //Db work...
 // dbDebugger('Connected to the database...');
+
+module.exports = server;

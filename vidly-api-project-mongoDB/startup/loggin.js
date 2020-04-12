@@ -1,5 +1,5 @@
 const winston = require('winston');
-require('winston-mongodb');
+// require('winston-mongodb'); // conflict with jest
 require('express-async-errors');
 
 module.exports = function () {
@@ -27,9 +27,9 @@ module.exports = function () {
   winston.add(winston.transports.File, {
     filename: 'logfile.log'
   }); // write in logfile.log
-  winston.add(winston.transports.MongoDB, {
-    db: 'mongodb://localhost/vidly-api-project', // should be on a dedicated database
-    level: 'error'
-  });
+  // winston.add(winston.transports.MongoDB, {
+  //   db: 'mongodb://localhost/vidly-api-project', // should be on a dedicated database
+  //   level: 'error'
+  // });
 
 };
