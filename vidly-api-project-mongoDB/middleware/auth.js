@@ -1,3 +1,5 @@
+// auth est fait pour bloquer certaines actions à un user qui n'est pas connecté
+
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
@@ -7,7 +9,7 @@ module.exports = function (req, res, next) {
 
   try {
     const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
-    req.user = decoded; // si tout est bon, ajout du token dans les paramètres du user
+    req.user = decoded; // si tout est bon, ajout du payload dans le current user
     next();
   }
   catch (ex) {

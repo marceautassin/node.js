@@ -5,6 +5,7 @@ const {
 const {
   User
 } = require('../../models/user');
+const mongoose = require('mongoose');
 
 let server;
 
@@ -14,8 +15,8 @@ describe('/api/genres', () => {
     server = require('../../index');
   });
   afterEach(async () => {
-    server.close();
     await Genre.remove({}); // collection must be drop at each test
+    server.close();
   });
 
   describe('GET /', () => {
@@ -49,6 +50,13 @@ describe('/api/genres', () => {
     });
     it('Should return 404 if invalid id is passed', async () => {
       const res = await request(server).get('/api/genres/1');
+
+      expect(res.status).toBe(404);
+    });
+
+    it('Should return 404 if given id does not exist', async () => {
+      const id = mongoose.Types.ObjectId();
+      const res = await request(server).get('/api/genres/' + id);
 
       expect(res.status).toBe(404);
     });
