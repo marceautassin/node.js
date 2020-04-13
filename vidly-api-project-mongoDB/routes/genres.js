@@ -1,22 +1,25 @@
-const {Genre, validate} = require('../models/genre')
+const {
+  Genre,
+  validate
+} = require('../models/genre')
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router(); // same as app but for routes
+const validateObjectId = require('../middleware/validateObjectId');
 
 // get
 
-router.get('/',  async (req, res) => {
-    // throw new Error('That is an error'); => test pour winston
+router.get('/', async (req, res) => {
+  // throw new Error('That is an error'); => test pour winston
 
-    const genres = await Genre.find().sort('name');
-    res.send(genres);
+  const genres = await Genre.find().sort('name');
+  res.send(genres);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',validateObjectId,  async (req, res) => { // ajout de la fonction validateObjectId pour générer une erreur 404 si ID invalide.
   const genre = await Genre.findById(req.params.id);
-
   if (!genre) return res.status(404).send('This genre does not exists.');
 
   res.send(genre);
@@ -61,7 +64,7 @@ router.put('/:id', auth, async (req, res) => {
 
 // delete
 
-router.delete('/:id',[auth, admin], async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
   const genre = await Genre.findByIdAndRemove(req.params.id);
   if (!genre) return res.status(404).send('This genre does not exists.');
 
