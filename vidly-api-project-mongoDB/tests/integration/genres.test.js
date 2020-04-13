@@ -14,8 +14,8 @@ describe('/api/genres', () => {
     server = require('../../index');
   })
   afterEach(async () => {
-    await Genre.remove({});
     await server.close();
+    await Genre.remove({});
   });
 
   describe('GET /', () => {
@@ -182,14 +182,6 @@ describe('/api/genres', () => {
       expect(res.status).toBe(400);
     });
 
-    it('should return 404 if id is invalid', async () => {
-      id = 1;
-
-      const res = await exec();
-
-      expect(res.status).toBe(404);
-    });
-
     it('should return 404 if genre with the given id was not found', async () => {
       id = mongoose.Types.ObjectId();
 
@@ -256,14 +248,6 @@ describe('/api/genres', () => {
       const res = await exec();
 
       expect(res.status).toBe(403);
-    });
-
-    it('should return 404 if id is invalid', async () => {
-      id = 1;
-
-      const res = await exec();
-
-      expect(res.status).toBe(404);
     });
 
     it('should return 404 if no genre with the given id was found', async () => {
