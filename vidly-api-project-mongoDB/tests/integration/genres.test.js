@@ -1,22 +1,31 @@
 const request = require('supertest');
-const { Genre } = require('../../models/genre');
-const { User } = require('../../models/user');
+const {
+  Genre
+} = require('../../models/genre');
+const {
+  User
+} = require('../../models/user');
 const mongoose = require('mongoose');
 
 let server;
 
 describe('/api/genres', () => {
-  beforeEach(() => { server = require('../../index'); })
+  beforeEach(() => {
+    server = require('../../index');
+  })
   afterEach(async () => {
-    server.close();
     await Genre.remove({});
+    await server.close();
   });
 
   describe('GET /', () => {
     it('should return all genres', async () => {
-      const genres = [
-        { name: 'genre1' },
-        { name: 'genre2' },
+      const genres = [{
+          name: 'genre1'
+        },
+        {
+          name: 'genre2'
+        },
       ];
 
       await Genre.collection.insertMany(genres);
@@ -32,7 +41,9 @@ describe('/api/genres', () => {
 
   describe('GET /:id', () => {
     it('should return a genre if valid id is passed', async () => {
-      const genre = new Genre({ name: 'genre1' });
+      const genre = new Genre({
+        name: 'genre1'
+      });
       await genre.save();
 
       const res = await request(server).get('/api/genres/' + genre._id);
@@ -67,7 +78,9 @@ describe('/api/genres', () => {
       return await request(server)
         .post('/api/genres')
         .set('x-auth-token', token)
-        .send({ name });
+        .send({
+          name
+        });
     }
 
     beforeEach(() => {
@@ -102,7 +115,9 @@ describe('/api/genres', () => {
     it('should save the genre if it is valid', async () => {
       await exec();
 
-      const genre = await Genre.find({ name: 'genre1' });
+      const genre = await Genre.find({
+        name: 'genre1'
+      });
 
       expect(genre).not.toBeNull();
     });
@@ -125,13 +140,17 @@ describe('/api/genres', () => {
       return await request(server)
         .put('/api/genres/' + id)
         .set('x-auth-token', token)
-        .send({ name: newName });
+        .send({
+          name: newName
+        });
     }
 
     beforeEach(async () => {
       // Before each test we need to create a genre and
       // put it in the database.
-      genre = new Genre({ name: 'genre1' });
+      genre = new Genre({
+        name: 'genre1'
+      });
       await genre.save();
 
       token = new User().generateAuthToken();
@@ -210,11 +229,15 @@ describe('/api/genres', () => {
     beforeEach(async () => {
       // Before each test we need to create a genre and
       // put it in the database.
-      genre = new Genre({ name: 'genre1' });
+      genre = new Genre({
+        name: 'genre1'
+      });
       await genre.save();
 
       id = genre._id;
-      token = new User({ isAdmin: true }).generateAuthToken();
+      token = new User({
+        isAdmin: true
+      }).generateAuthToken();
     })
 
     it('should return 401 if client is not logged in', async () => {
@@ -226,7 +249,9 @@ describe('/api/genres', () => {
     });
 
     it('should return 403 if the user is not an admin', async () => {
-      token = new User({ isAdmin: false }).generateAuthToken();
+      token = new User({
+        isAdmin: false
+      }).generateAuthToken();
 
       const res = await exec();
 
