@@ -1,34 +1,28 @@
 const request = require('supertest');
-const {
-  Genre
-} = require('../../models/genre');
-const {
-  User
-} = require('../../models/user');
+const { Genre } = require('../../models/genre');
+const { User } = require('../../models/user');
 const mongoose = require('mongoose');
 
 let server;
 
-
 describe('/api/genres', () => {
-  beforeEach(() => {
-    server = require('../../index');
-  });
+  beforeEach(() => { server = require('../../index'); })
   afterEach(async () => {
-    await Genre.remove({}); // collection must be drop at each test
     server.close();
+    await Genre.remove({});
   });
 
   describe('GET /', () => {
-    it('Should return all genres', async () => {
-      await Genre.collection.insertMany([{
-          name: 'genre1'
-        },
-        {
-          name: 'genre2'
-        }
-      ]);
+    it('should return all genres', async () => {
+      const genres = [
+        { name: 'genre1' },
+        { name: 'genre2' },
+      ];
+
+      await Genre.collection.insertMany(genres);
+
       const res = await request(server).get('/api/genres');
+
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(2);
       expect(res.body.some(g => g.name === 'genre1')).toBeTruthy();
@@ -37,24 +31,23 @@ describe('/api/genres', () => {
   });
 
   describe('GET /:id', () => {
-    it('Should return a genre if valid Id is passed', async () => {
-      const genre = new Genre({
-        name: "IdTest"
-      });
+    it('should return a genre if valid id is passed', async () => {
+      const genre = new Genre({ name: 'genre1' });
       await genre.save();
 
       const res = await request(server).get('/api/genres/' + genre._id);
 
       expect(res.status).toBe(200);
-      expect(res.body).toHaveProperty('name', genre.name); // test name and not the entire object because Id is a string in one case and not in an other
+      expect(res.body).toHaveProperty('name', genre.name);
     });
-    it('Should return 404 if invalid id is passed', async () => {
+
+    it('should return 404 if invalid id is passed', async () => {
       const res = await request(server).get('/api/genres/1');
 
       expect(res.status).toBe(404);
     });
 
-    it('Should return 404 if given id does not exist', async () => {
+    it('should return 404 if no genre with the given id exists', async () => {
       const id = mongoose.Types.ObjectId();
       const res = await request(server).get('/api/genres/' + id);
 
@@ -64,6 +57,9 @@ describe('/api/genres', () => {
 
   describe('POST /', () => {
 
+    // Define the happy path, and then in each test, we change
+    // one parameter that clearly aligns with the name of the
+    // test.
     let token;
     let name;
 
@@ -71,17 +67,15 @@ describe('/api/genres', () => {
       return await request(server)
         .post('/api/genres')
         .set('x-auth-token', token)
-        .send({
-          name: name
-        });
-    };
+        .send({ name });
+    }
 
     beforeEach(() => {
       token = new User().generateAuthToken();
       name = 'genre1';
-    });
+    })
 
-    it('Should return a 401 error if client is not logged in', async () => {
+    it('should return 401 if client is not logged in', async () => {
       token = '';
 
       const res = await exec();
@@ -89,7 +83,7 @@ describe('/api/genres', () => {
       expect(res.status).toBe(401);
     });
 
-    it('Should return 400 if genre is less than 5 characters', async () => {
+    it('should return 400 if genre is less than 5 characters', async () => {
       name = '1234';
 
       const res = await exec();
@@ -97,7 +91,7 @@ describe('/api/genres', () => {
       expect(res.status).toBe(400);
     });
 
-    it('Should return 400 if genre is more than 50 characters', async () => {
+    it('should return 400 if genre is more than 50 characters', async () => {
       name = new Array(52).join('a');
 
       const res = await exec();
@@ -105,16 +99,15 @@ describe('/api/genres', () => {
       expect(res.status).toBe(400);
     });
 
-    it('Should save genre if it is valid', async () => {
+    it('should save the genre if it is valid', async () => {
       await exec();
 
-      const genre = await Genre.find({
-        name: name
-      });
+      const genre = await Genre.find({ name: 'genre1' });
+
       expect(genre).not.toBeNull();
     });
 
-    it('Should return genre if it is valid', async () => {
+    it('should return the genre if it is valid', async () => {
       const res = await exec();
 
       expect(res.body).toHaveProperty('_id');
@@ -132,17 +125,13 @@ describe('/api/genres', () => {
       return await request(server)
         .put('/api/genres/' + id)
         .set('x-auth-token', token)
-        .send({
-          name: newName
-        });
+        .send({ name: newName });
     }
 
     beforeEach(async () => {
       // Before each test we need to create a genre and
       // put it in the database.
-      genre = new Genre({
-        name: 'genre1'
-      });
+      genre = new Genre({ name: 'genre1' });
       await genre.save();
 
       token = new User().generateAuthToken();
@@ -221,15 +210,11 @@ describe('/api/genres', () => {
     beforeEach(async () => {
       // Before each test we need to create a genre and
       // put it in the database.
-      genre = new Genre({
-        name: 'genre1'
-      });
+      genre = new Genre({ name: 'genre1' });
       await genre.save();
 
       id = genre._id;
-      token = new User({
-        isAdmin: true
-      }).generateAuthToken();
+      token = new User({ isAdmin: true }).generateAuthToken();
     })
 
     it('should return 401 if client is not logged in', async () => {
@@ -241,9 +226,7 @@ describe('/api/genres', () => {
     });
 
     it('should return 403 if the user is not an admin', async () => {
-      token = new User({
-        isAdmin: false
-      }).generateAuthToken();
+      token = new User({ isAdmin: false }).generateAuthToken();
 
       const res = await exec();
 
