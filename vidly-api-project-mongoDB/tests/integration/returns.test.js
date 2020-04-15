@@ -88,4 +88,29 @@ describe('/api/returns', () => {
     expect(res.status).toBe(404);
   });
 
+  it('should return 400 if rental already processed', async () => {
+    rental.dateReturned = new Date();
+    await rental.save();
+    const res = await exec();
+
+    expect(res.status).toBe(400);
+  });
+
+  it('should return 200 if valid request', async () => {
+
+    const res = await exec();
+
+    expect(res.status).toBe(200);
+  });
+
+  it('should set the returnDate if input is valid', async () => {
+
+    const res = await exec();
+
+    const rentalInDb = await Rental.findById(rental._id);
+   const diff =  new Date() - rentalInDb.dateReturned;
+
+    expect(diff).toBeLessThan(10 * 1000);
+  });
+
 });
