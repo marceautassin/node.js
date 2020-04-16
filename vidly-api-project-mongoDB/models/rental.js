@@ -1,10 +1,8 @@
+const moment = require('moment');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-
-
-
-const Rental = mongoose.model('Rental', new mongoose.Schema({
+const rentalSchema = new mongoose.Schema({
   customer: {
     type: new mongoose.Schema({
       name: {
@@ -56,7 +54,26 @@ const Rental = mongoose.model('Rental', new mongoose.Schema({
     type: Number,
     min: 0
   }
-}));
+});
+
+// static method
+rentalSchema.statics.lookup = function(movieId, customerId) {
+  return this.findOne({
+    'customer._id': customerId, // use '' property to access key in subdocument
+    'movie._id': movieId
+  });
+};
+
+// instance method
+
+rentalSchema.methods.return = function() {
+  this.dateReturned = new Date();
+
+  const rentalDays = moment().diff(this.dateOut, 'days');
+  this.rentalFee = rentalDays * this.movie.dailyRentalRate;
+};
+
+const Rental = mongoose.model('Rental', rentalSchema);
 
 const validateRental = (rental) => {
   const schema = {
