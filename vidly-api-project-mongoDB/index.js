@@ -11,7 +11,7 @@ require('./startup/db')();
 require('./startup/loggin')();
 require('./startup/config')();
 require('./startup/validation')();
-require('./startup/prod')();
+require('./startup/prod')(app);
 
   // throw new Error('Somehting failed during startup...') // => uncaught exception test
   // const p = Promise.reject(new Error('It fails again...'));
