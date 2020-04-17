@@ -1,5 +1,4 @@
 const express = require('express');
-const helmet = require('helmet');
 const genres = require('../routes/genres'); // call router methods from courses file
 const customers = require('../routes/customers');
 const movies = require('../routes/movies');
@@ -14,7 +13,6 @@ module.exports = function (app) {
   app.use(express.json()); //middleware function => req.body
   app.use(express.urlencoded({ extended: true })); //middleware function => req.body
   app.use(express.static('public')); // Define a folder for static web components
-  app.use(helmet()); // Define HTTP headers
   app.use('/api/genres', genres); // for any routes beginning by /api/genres, use routes frome genres
   app.use('/', home);
   app.use('/api/genres', genres); // for any routes beginning by /api/genres, use routes frome genres
