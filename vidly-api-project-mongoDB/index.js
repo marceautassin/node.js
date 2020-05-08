@@ -4,7 +4,7 @@
 // const morgan = require('morgan');
 const express = require('express');
 const app = express();
-const winston = require('winston')
+const winston = require('winston');
 
 require('./startup/routes')(app);
 require('./startup/db')();
